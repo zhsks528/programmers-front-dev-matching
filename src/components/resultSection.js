@@ -1,8 +1,8 @@
 import { lazyLoading } from "../utills/lazyloading.js";
 
 class ResultSection {
-  constructor({ $target, onClick }) {
-    this.data = null;
+  constructor({ $target, data, onClick }) {
+    this.data = data;
     this.onClick = onClick;
     this.section = document.createElement("section");
     this.section.className = "result-section";
@@ -23,7 +23,7 @@ class ResultSection {
   }
 
   render() {
-    if (this.data === null) {
+    if (!this.data) {
       return;
     }
 

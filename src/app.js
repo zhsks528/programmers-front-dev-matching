@@ -4,17 +4,20 @@ import Loading from "./components/loading.js";
 import Modal from "./components/modal.js";
 
 import { api } from "./api/theCatAPI.js";
+import { getItem, setItem } from "./utills/sessionStorage.js";
 
 class App {
   constructor($target) {
+    const data = getItem("data");
     const searchSection = new SearchSection({
       $target,
-      onClick: async () => {
+      onRandom: async () => {
         loading.toggleSpinner();
         const response = await api.fetchRandomCats();
 
         if (!response.isError) {
           resultSection.setState(response.data);
+          setItem("data", response.data);
           loading.toggleSpinner();
         }
       },
@@ -24,6 +27,7 @@ class App {
 
         if (!response.isError) {
           resultSection.setState(response.data);
+          setItem("data", response.data);
           loading.toggleSpinner();
         }
       },
@@ -31,9 +35,11 @@ class App {
 
     const resultSection = new ResultSection({
       $target,
+      data,
       onClick: (data) => {
         modal.setState(data);
       },
+      onScroll: async () => {},
     });
 
     const loading = new Loading({ $target });
