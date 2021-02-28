@@ -1,3 +1,5 @@
+import { lazyLoading } from "../utills/lazyloading.js";
+
 class ResultSection {
   constructor({ $target }) {
     this.data = null;
@@ -6,11 +8,13 @@ class ResultSection {
 
     $target.appendChild(this.section);
     this.render();
+    lazyLoading();
   }
 
   setState(data) {
     this.data = data;
     this.render();
+    lazyLoading();
   }
 
   render() {
@@ -32,7 +36,8 @@ class ResultSection {
 
         const catImage = document.createElement("img");
         catImage.className = "cat-image";
-        catImage.src = cat.url;
+        catImage.classList.add("lazy");
+        catImage.dataset.src = cat.url;
 
         // Append
         card.appendChild(catImage);
