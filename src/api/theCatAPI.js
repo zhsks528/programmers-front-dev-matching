@@ -1,20 +1,22 @@
-const API_ENDPOINT = "https://api.thecatapi.com/v1";
+const API_ENDPOINT = "https://api.thecatapi.com/v11";
 
 const request = async (url) => {
   try {
     const response = await fetch(url);
 
     if (response.ok) {
-      const data = response.json();
+      const data = await response.json();
 
       return data;
     } else {
-      const erroData = response.json();
-
+      const erroData = await response.json();
       throw erroData;
     }
   } catch (e) {
-    return e;
+    throw {
+      message: e.message,
+      status: e.status,
+    };
   }
 };
 
@@ -28,7 +30,12 @@ const api = {
         isError: false,
         data: response,
       };
-    } catch (e) {}
+    } catch (e) {
+      return {
+        isError: true,
+        data: e,
+      };
+    }
   },
 
   // 키워드를 이용한 검색
@@ -49,7 +56,12 @@ const api = {
         isError: false,
         data: response,
       };
-    } catch (e) {}
+    } catch (e) {
+      return {
+        isError: true,
+        data: e,
+      };
+    }
   },
 };
 
