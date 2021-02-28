@@ -11,6 +11,17 @@ class SearchSection {
     $target.appendChild(this.section);
 
     this.render();
+    this.initialFocus();
+  }
+
+  initialFocus() {
+    const searchInput = document.querySelector(".search-input");
+    searchInput.focus();
+  }
+
+  deleteKeyword() {
+    const searchInput = document.querySelector(".search-input");
+    searchInput.value = "";
   }
 
   addRecentKeyword(keyword) {
@@ -43,6 +54,7 @@ class SearchSection {
     searchContainer.className = "search-container";
 
     const searchInput = document.createElement("input");
+    searchInput.className = "search-input";
     searchInput.placeholder = "검색어를 입력해주세요.";
 
     const searchRandomBtn = document.createElement("button");
@@ -73,12 +85,13 @@ class SearchSection {
     });
 
     searchRandomBtn.addEventListener("click", this.onRandom);
+    searchInput.addEventListener("focus", this.deleteKeyword);
     searchInput.addEventListener(
       "keyup",
-      debounce(() => {
-        const keyword = searchInput.value;
-
-        this.searchByKeyword(keyword);
+      debounce((event) => {
+        if (event.key == "Enter") {
+          this.searchByKeyword(searchInput.value);
+        }
       }, 1000)
     );
 
