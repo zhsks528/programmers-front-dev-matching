@@ -8,9 +8,11 @@ import { getItem, setItem } from "./utills/sessionStorage.js";
 
 class App {
   constructor($target) {
+    const keywords = getItem("keywords");
     const data = getItem("data");
     const searchSection = new SearchSection({
       $target,
+      keywords,
       onRandom: async () => {
         loading.toggleSpinner();
         const response = await api.fetchRandomCats();
