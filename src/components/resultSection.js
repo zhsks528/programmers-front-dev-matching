@@ -1,8 +1,9 @@
 import { lazyLoading } from "../utills/lazyloading.js";
 
 class ResultSection {
-  constructor({ $target }) {
+  constructor({ $target, onClick }) {
     this.data = null;
+    this.onClick = onClick;
     this.section = document.createElement("section");
     this.section.className = "result-section";
 
@@ -15,6 +16,10 @@ class ResultSection {
     this.data = data;
     this.render();
     lazyLoading();
+  }
+
+  findCatById(id) {
+    return this.data.find((cat) => cat.id === id);
   }
 
   render() {
@@ -34,6 +39,7 @@ class ResultSection {
         card.className = "cat-card";
         card.dataset.id = cat.id;
 
+        // LazyLoading
         const catImage = document.createElement("img");
         catImage.className = "cat-image";
         catImage.classList.add("lazy");
@@ -44,9 +50,31 @@ class ResultSection {
         cardContainer.appendChild(card);
       });
 
+      // Listener (Event-delegation)
+      cardContainer.addEventListener("click", (event) => {
+        const path = event.path;
+        const card = path.find((x) => x.className === "cat-card");
+
+        if (card) {
+          const id = card.dataset.id;
+          const cardInfo = this.findCatById(id);
+
+          this.onClick(cardInfo);
+        }
+      });
+
       this.section.appendChild(cardContainer);
     } else {
       // 데이터 없음
+      const noDataContainer = document.createElement("div");
+      noDataContainer.className = "nodata-container";
+
+      const content = document.createElement("article");
+      content.innerText = "검색 결과가 없습니다.";
+
+      noDataContainer.appendChild(content);
+
+      this.section.appendChild(noDataContainer);
     }
   }
 }
