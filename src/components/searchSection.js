@@ -1,12 +1,19 @@
+import { debounce } from "../utills/debounce.js";
+
 class SearchSection {
-  constructor({ $target, onClick }) {
+  constructor({ $target, onClick, onSearch }) {
     this.onClick = onClick;
+    this.onSearch = onSearch;
     this.section = document.createElement("section");
     this.section.className = "search-section";
 
     $target.appendChild(this.section);
 
     this.render();
+  }
+
+  searchByKeyword(keyword) {
+    this.onSearch(keyword);
   }
 
   render() {
@@ -23,6 +30,14 @@ class SearchSection {
 
     // Listener
     randomBtn.addEventListener("click", this.onClick);
+    searchBox.addEventListener(
+      "keyup",
+      debounce(() => {
+        const keyword = searchBox.value;
+
+        this.searchByKeyword(keyword);
+      }, 1000)
+    );
 
     // Append
     searchWrapper.appendChild(searchBox);

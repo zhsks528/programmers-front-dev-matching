@@ -30,6 +30,27 @@ const api = {
       };
     } catch (e) {}
   },
+
+  // 키워드를 이용한 검색
+  fetchKeywordCats: async (keyword) => {
+    try {
+      const breeds = await request(
+        `${API_ENDPOINT}/breeds/search?q=${keyword}`
+      );
+      const requests = breeds.map(async (breed) => {
+        return await request(
+          `${API_ENDPOINT}/images/search?limit=20&breed_ids=${breed.id}`
+        );
+      });
+      const results = await Promise.all(requests);
+      const response = Array.prototype.concat.apply([], results);
+
+      return {
+        isError: false,
+        data: response,
+      };
+    } catch (e) {}
+  },
 };
 
 export { api };
