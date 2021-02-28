@@ -1,4 +1,4 @@
-const API_ENDPOINT = "https://api.thecatapi.com/v11";
+const API_ENDPOINT = "https://api.thecatapi.com/v1";
 
 const request = async (url) => {
   try {
