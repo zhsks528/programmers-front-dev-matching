@@ -2,6 +2,7 @@ import SearchSection from "./components/searchSection.js";
 import ResultSection from "./components/resultSection.js";
 import Loading from "./components/loading.js";
 import Modal from "./components/modal.js";
+import Error from "./components/error.js";
 
 import { api } from "./api/theCatAPI.js";
 import { getItem, setItem } from "./utills/sessionStorage.js";
@@ -21,6 +22,8 @@ class App {
           resultSection.setState(response.data);
           setItem("data", response.data);
           loading.toggleSpinner();
+        } else {
+          error.setState(response.data);
         }
       },
       onSearch: async (keyword) => {
@@ -31,6 +34,8 @@ class App {
           resultSection.setState(response.data);
           setItem("data", response.data);
           loading.toggleSpinner();
+        } else {
+          error.setState(response.data);
         }
       },
     });
@@ -47,6 +52,8 @@ class App {
     const loading = new Loading({ $target });
 
     const modal = new Modal({ $target });
+
+    const error = new Error({ $target });
   }
 }
 
