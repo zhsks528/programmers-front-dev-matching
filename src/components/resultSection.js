@@ -1,3 +1,4 @@
+import Card from "./card.js";
 import { lazyLoading } from "../utills/lazyloading.js";
 
 class ResultSection {
@@ -23,9 +24,7 @@ class ResultSection {
   }
 
   render() {
-    if (!this.data) {
-      return;
-    }
+    if (!this.data) return;
 
     this.section.innerHTML = "";
 
@@ -35,19 +34,10 @@ class ResultSection {
       cardContainer.className = "card-container";
 
       this.data.map((cat) => {
-        const card = document.createElement("div");
-        card.className = "cat-card";
-        card.dataset.id = cat.id;
-
-        // LazyLoading
-        const catImage = document.createElement("img");
-        catImage.className = "cat-image";
-        catImage.classList.add("lazy");
-        catImage.dataset.src = cat.url;
-
-        // Append
-        card.appendChild(catImage);
-        cardContainer.appendChild(card);
+        new Card({
+          $target: cardContainer,
+          data: cat,
+        });
       });
 
       // Listener (Event-delegation)
