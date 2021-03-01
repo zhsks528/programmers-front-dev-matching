@@ -46,7 +46,22 @@ class App {
       onClick: (data) => {
         modal.setState(data);
       },
-      onScroll: async () => {},
+      onScroll: async () => {
+        loading.toggleSpinner();
+
+        const response = await api.fetchRandomCats();
+
+        if (!response.isError) {
+          const beforeData = getItem("data");
+          const nextData = beforeData.concat(response.data);
+
+          setItem("data", nextData);
+          resultSection.setState(nextData);
+          loading.toggleSpinner();
+        } else {
+          error.setState(response.data);
+        }
+      },
     });
 
     const loading = new Loading({ $target });

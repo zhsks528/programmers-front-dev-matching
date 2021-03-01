@@ -1,16 +1,19 @@
 import Card from "./card.js";
 import { lazyLoading } from "../utills/lazyloading.js";
+import { scrollFetch } from "../utills/scrollFetch.js";
 
 class ResultSection {
-  constructor({ $target, data, onClick }) {
+  constructor({ $target, data, onClick, onScroll }) {
     this.data = data;
     this.onClick = onClick;
+    this.onScroll = onScroll;
     this.section = document.createElement("section");
     this.section.className = "result-section";
 
     $target.appendChild(this.section);
     this.render();
     lazyLoading();
+    scrollFetch(this.onScroll);
   }
 
   setState(data) {
