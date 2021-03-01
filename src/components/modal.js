@@ -13,7 +13,6 @@ class Modal {
 
   toggleModal() {
     this.isVisible = !this.isVisible;
-    console.log(this.isVisible);
     const modal = document.querySelector(".modal-wrapper");
     modal.classList.toggle("hidden");
   }
@@ -25,8 +24,6 @@ class Modal {
   }
 
   onClose() {
-    console.log(this);
-
     this.toggleModal();
     this.data = null;
     this.modalWrapper.innerHTML = "";
@@ -35,55 +32,82 @@ class Modal {
   render() {
     if (!this.isVisible) return;
 
+    const { url } = this.data;
+    const { name, origin, temperament } = this.data.breeds[0]
+      ? this.data.breeds[0]
+      : { name: "정보없음", origin: "정보없음", temperament: "정보없음" };
+    const { imperial, metric } = this.data.breeds[0]
+      ? this.data.breeds[0].weight
+      : { imperial: "정보없음", metric: "정보없음" };
+
     // HTML
     const overlay = document.createElement("div");
     overlay.className = "overlay";
 
-    const modal = document.createElement("div");
-    modal.className = "modal";
+    const modalContents = document.createElement("section");
+    modalContents.className = "modal-contents";
 
-    const modalHeader = document.createElement("div");
+    const modalHeader = document.createElement("header");
+    modalHeader.className = "modal-header";
 
     const modalTitle = document.createElement("h3");
-    modalTitle.innerText = "제목";
+    modalTitle.className = "modal-title";
+    modalTitle.innerText = name;
 
     const closeBtn = document.createElement("button");
+    closeBtn.className = "close-btn";
     closeBtn.innerText = "X";
 
     const modalImage = document.createElement("img");
-    modalImage.className = "modal-catImage";
-    modalImage.src = this.data.url;
+    modalImage.className = "modal-image";
+    modalImage.src = url;
 
-    const modalInfo = document.createElement("div");
+    const modalInfo = document.createElement("section");
+    modalInfo.className = "modal-info";
 
-    const catPersonality = document.createElement("div");
-    catPersonality.innerText = "성격 정보";
+    const catOrigin = document.createElement("p");
+    catOrigin.className = "cat-origin";
+    catOrigin.innerText = origin;
 
-    const catBorn = document.createElement("div");
-    catBorn.innerText = "태생 정보";
+    const catTemperament = document.createElement("p");
+    catTemperament.className = "cat-temperament";
+    catTemperament.innerText = temperament;
+
+    const catWeight = document.createElement("p");
+    catWeight.className = "cat-width";
+    catWeight.innerText = `${imperial} (imperial) / ${metric} (metric)`;
 
     // Listener
+    window.addEventListener("keydown", (event) => {
+      event.stopImmediatePropagation();
+
+      if (event.key === "Escape") {
+        this.onClose();
+      }
+    });
+
     overlay.addEventListener("click", () => {
       this.onClose();
     });
+
     closeBtn.addEventListener("click", () => {
       this.onClose();
     });
 
-    // Appen
+    // Append
     modalHeader.appendChild(modalTitle);
     modalHeader.appendChild(closeBtn);
 
-    modalInfo.appendChild(catPersonality);
-    modalInfo.appendChild(catBorn);
+    modalInfo.appendChild(catOrigin);
+    modalInfo.appendChild(catTemperament);
+    modalInfo.appendChild(catWeight);
 
-    modal.appendChild(modalHeader);
-    modal.appendChild(modalImage);
-    modal.appendChild(modalInfo);
-
-    overlay.appendChild(modal);
+    modalContents.appendChild(modalHeader);
+    modalContents.appendChild(modalImage);
+    modalContents.appendChild(modalInfo);
 
     this.modalWrapper.appendChild(overlay);
+    this.modalWrapper.appendChild(modalContents);
   }
 }
 
