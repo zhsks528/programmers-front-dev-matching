@@ -147,18 +147,16 @@
 /* keywords */
 
 .keywords-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   width: 100%;
 }
 
 .keywords-container .recent-keyword {
+  display: inline-block;
   background: orange;
   border-radius: 10px;
-  width: 100%;
   text-align: center;
   cursor: pointer;
+  padding: 0 5px;
   margin-right: 5px;
 }
 
