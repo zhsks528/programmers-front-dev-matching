@@ -1,5 +1,6 @@
 import { debounce } from "../utills/debounce.js";
 import { setItem } from "../utills/sessionStorage.js";
+import { applySetting } from "../utills/darkmode.js";
 class SearchSection {
   constructor({ $target, keywords, onRandom, onSearch }) {
     this.keywords = keywords;
@@ -12,6 +13,7 @@ class SearchSection {
 
     this.render();
     this.initialFocus();
+    applySetting();
   }
 
   initialFocus() {
@@ -60,6 +62,10 @@ class SearchSection {
     const searchRandomBtn = document.createElement("button");
     searchRandomBtn.innerText = "랜덤 검색";
 
+    const darkmodeBtn = document.createElement("input");
+    darkmodeBtn.className = ".darkmode-btn";
+    darkmodeBtn.type = "checkbox";
+
     const keywordsContainer = document.createElement("div");
     keywordsContainer.className = "keywords-container";
 
@@ -95,9 +101,20 @@ class SearchSection {
       }, 1000)
     );
 
+    darkmodeBtn.addEventListener("click", (event) => {
+      if (event.target.checked) {
+        localStorage.setItem("color-theme", "light");
+        document.documentElement.setAttribute("color-theme", "dark");
+      } else {
+        localStorage.setItem("color-theme", "light");
+        document.documentElement.setAttribute("color-theme", "light");
+      }
+    });
+
     // Append
     searchContainer.appendChild(searchInput);
     searchContainer.appendChild(searchRandomBtn);
+    searchContainer.appendChild(darkmodeBtn);
 
     searchWrapper.appendChild(searchContainer);
     searchWrapper.appendChild(keywordsContainer);

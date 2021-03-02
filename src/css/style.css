@@ -1,3 +1,22 @@
+/* dark-mode */
+
+:root[color-theme="light"] {
+  --background: #fff;
+  --boxColor: #000;
+  --textColor: #000;
+}
+
+:root[color-theme="dark"] {
+  --background: #000;
+  --boxColor: #fff;
+  --textColor: #fff;
+}
+
+html {
+  background: var(--background);
+  color: var(--textColor);
+}
+
 /* resultSection */
 
 .card-container {
@@ -131,7 +150,6 @@
 .search-container input {
   flex: 2;
   margin-right: 10px;
-  height: 80%;
 }
 
 .search-container button {
