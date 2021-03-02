@@ -78,20 +78,18 @@ class Modal {
     catWeight.innerText = `${imperial} (imperial) / ${metric} (metric)`;
 
     // Listener
-    window.addEventListener("keydown", (event) => {
-      event.stopImmediatePropagation();
-
-      if (event.key === "Escape") {
-        this.onClose();
-      }
-    });
-
     overlay.addEventListener("click", () => {
       this.onClose();
     });
 
     closeBtn.addEventListener("click", () => {
       this.onClose();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && this.isVisible) {
+        this.onClose();
+      }
     });
 
     // Append
